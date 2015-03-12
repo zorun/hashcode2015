@@ -1,0 +1,12 @@
+package java_hashcode;
+
+public class Server {
+	public Server(int size, int cpu){
+		this.size = size;
+		this.cpu = cpu;
+	}
+	public int size;
+	public int cpu;
+	public int row;
+	public int slot;
+}
