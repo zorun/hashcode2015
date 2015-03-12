@@ -46,6 +46,7 @@ public class inout {
 		    for(int i=0; i<data_center.M; i++) {
 		    	if((text = reader.readLine())!=null){
 		    		initial_list = text.split(" ");
+		    		servers[i].index = i;
 		    		servers[i] = new Server(Integer.parseInt(initial_list[0]), Integer.parseInt(initial_list[1]));
 		    		servers[i].ratio = Math.round(servers[i].cpu/ servers[i].size);
 		    		if(servers[i].ratio > max)

@@ -14,6 +14,7 @@ public class Server {
 		return this.ratio > comp.ratio; 
 	}
 	
+	public int index;
 	public int size;
 	public int cpu;
 	public int row;
