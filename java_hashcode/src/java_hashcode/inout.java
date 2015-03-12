@@ -1,0 +1,81 @@
+package java_hashcode;
+
+import java.io.*;
+import java.util.*;
+import java.*;
+
+public class inout {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		List<Integer> list = new ArrayList<Integer>();
+		File file = new File("dc.in");
+		BufferedReader reader = null;
+		int R,S,U,P,M=0,x,y;
+	//	int unavail[] = new int[1000];
+		Server[] servers = new Server[1000];
+		int s_size[] = new int[1000];
+		int s_cap[] = new int[1000];
+		int center[][] = new int[1000][1000];
+		
+		try {
+		    reader = new BufferedReader(new FileReader(file));
+		    String text = null;
+		    text = reader.readLine();
+		    String[] initial_list = text.split(" ");
+		    R = Integer.parseInt(initial_list[0]);
+		    S = Integer.parseInt(initial_list[1]);
+		    U = Integer.parseInt(initial_list[2]);
+		    P = Integer.parseInt(initial_list[3]);
+		    M = Integer.parseInt(initial_list[4]);
+		    for(int i=0; i<U; i++)
+		    {
+		    	if((text = reader.readLine())!=null){
+		    		initial_list = text.split(" ");
+		    		x = Integer.parseInt(initial_list[0]);
+		    		y = Integer.parseInt(initial_list[1]);
+		    		center[x][y] = -1;
+		    	}
+		    }
+		    for(int i=0; i<M; i++) {
+		    	if((text = reader.readLine())!=null){
+		    		initial_list = text.split(" ");
+		    		servers[i] = new Server(Integer.parseInt(initial_list[0]), Integer.parseInt(initial_list[1]));
+		    		System.out.println(servers[i].size);
+		    		System.out.println(i);
+		    	}
+		    }
+		   
+		} catch (FileNotFoundException e) {
+		    e.printStackTrace();
+		} catch (IOException e) {
+		    e.printStackTrace();
+		} finally {
+		    try {
+		        if (reader != null) {
+		            reader.close();
+		        }
+		    } catch (IOException e) {
+		    }
+		}
+
+		//print out the list
+		for(int i=0; i<M; i++) {
+			//System.out.println(s_size[i]);
+		}
+		PrintWriter writer = null;
+		try {
+			writer = new PrintWriter("out.txt", "UTF-8");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		writer.println("Hello World!");
+		writer.close();
+	}
+
+}
