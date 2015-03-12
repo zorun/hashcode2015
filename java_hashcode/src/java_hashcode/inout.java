@@ -40,14 +40,26 @@ public class inout {
 		    		center[x][y] = -1;
 		    	}
 		    }
+		    float min, max;
+		    min = 10;
+		    max = 0;
 		    for(int i=0; i<M; i++) {
 		    	if((text = reader.readLine())!=null){
 		    		initial_list = text.split(" ");
 		    		servers[i] = new Server(Integer.parseInt(initial_list[0]), Integer.parseInt(initial_list[1]));
-		    		System.out.println(servers[i].size);
+		    		servers[i].ratio = servers[i].cpu/ servers[i].size;
+		    		if(servers[i].ratio > max)
+		    			max = servers[i].ratio;
+		    		if(servers[i].ratio < min)
+		    			min = servers[i].ratio;
 		    		System.out.println(i);
+		    		System.out.println(servers[i].size);
+		    		System.out.println(servers[i].ratio);
 		    	}
 		    }
+		    System.out.println(min);
+		    System.out.println(max);
+		    
 		   
 		} catch (FileNotFoundException e) {
 		    e.printStackTrace();

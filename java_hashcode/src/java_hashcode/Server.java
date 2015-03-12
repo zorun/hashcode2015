@@ -13,4 +13,5 @@ public class Server {
 	public int cpu;
 	public int row;
 	public int slot;
+	public float ratio;
 }
