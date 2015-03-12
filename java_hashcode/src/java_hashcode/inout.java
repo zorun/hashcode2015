@@ -17,21 +17,21 @@ public class inout {
 		int R,S,U,P,M=0,x,y;
 	//	int unavail[] = new int[1000];
 		Server[] servers = new Server[625];
-		int s_size[] = new int[1000];
-		int s_cap[] = new int[1000];
 		int center[][] = new int[1000][1000];
+		
+		Data_center data_center = new Data_center();
 		
 		try {
 		    reader = new BufferedReader(new FileReader(file));
 		    String text = null;
 		    text = reader.readLine();
 		    String[] initial_list = text.split(" ");
-		    R = Integer.parseInt(initial_list[0]);
-		    S = Integer.parseInt(initial_list[1]);
-		    U = Integer.parseInt(initial_list[2]);
-		    P = Integer.parseInt(initial_list[3]);
-		    M = Integer.parseInt(initial_list[4]);
-		    for(int i=0; i<U; i++)
+		    data_center.R = Integer.parseInt(initial_list[0]);
+		    data_center.S = Integer.parseInt(initial_list[1]);
+		    data_center.U = Integer.parseInt(initial_list[2]);
+		    data_center.P = Integer.parseInt(initial_list[3]);
+		    data_center.M = Integer.parseInt(initial_list[4]);
+		    for(int i=0; i<data_center.U; i++)
 		    {
 		    	if((text = reader.readLine())!=null){
 		    		initial_list = text.split(" ");
@@ -43,7 +43,7 @@ public class inout {
 		    float min, max;
 		    min = 10;
 		    max = 0;
-		    for(int i=0; i<M; i++) {
+		    for(int i=0; i<data_center.M; i++) {
 		    	if((text = reader.readLine())!=null){
 		    		initial_list = text.split(" ");
 		    		servers[i] = new Server(Integer.parseInt(initial_list[0]), Integer.parseInt(initial_list[1]));
@@ -78,8 +78,13 @@ public class inout {
 
 		quick_sort_for_server server_sort = new quick_sort_for_server();
 		server_sort.sort(servers);
+		 for(int i=0; i<M; i++) {
+			 System.out.println(servers[i].ratio);
+		 }
 		System.out.println(servers[0].ratio);
 		System.out.println(servers[624].ratio);
+		System.out.println(data_center.R);
+	
 		
 		PrintWriter writer = null;
 		try {
