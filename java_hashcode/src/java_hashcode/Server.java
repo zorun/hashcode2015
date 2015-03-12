@@ -18,5 +18,6 @@ public class Server {
 	public int cpu;
 	public int row;
 	public int slot;
+        public int pool;
 	public int ratio;
 }
