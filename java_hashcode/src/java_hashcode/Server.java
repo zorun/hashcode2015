@@ -9,9 +9,14 @@ public class Server {
 		this.size = 0;
 		this.cpu = 0;
 	}
+	
+	public boolean compareTo(Server comp){
+		return this.ratio > comp.ratio; 
+	}
+	
 	public int size;
 	public int cpu;
 	public int row;
 	public int slot;
-	public float ratio;
+	public int ratio;
 }

@@ -16,7 +16,7 @@ public class inout {
 		BufferedReader reader = null;
 		int R,S,U,P,M=0,x,y;
 	//	int unavail[] = new int[1000];
-		Server[] servers = new Server[1000];
+		Server[] servers = new Server[625];
 		int s_size[] = new int[1000];
 		int s_cap[] = new int[1000];
 		int center[][] = new int[1000][1000];
@@ -47,7 +47,7 @@ public class inout {
 		    	if((text = reader.readLine())!=null){
 		    		initial_list = text.split(" ");
 		    		servers[i] = new Server(Integer.parseInt(initial_list[0]), Integer.parseInt(initial_list[1]));
-		    		servers[i].ratio = servers[i].cpu/ servers[i].size;
+		    		servers[i].ratio = Math.round(servers[i].cpu/ servers[i].size);
 		    		if(servers[i].ratio > max)
 		    			max = servers[i].ratio;
 		    		if(servers[i].ratio < min)
@@ -73,11 +73,14 @@ public class inout {
 		    } catch (IOException e) {
 		    }
 		}
+		
+		System.out.println(servers.length);
 
-		//print out the list
-		for(int i=0; i<M; i++) {
-			//System.out.println(s_size[i]);
-		}
+		quick_sort_for_server server_sort = new quick_sort_for_server();
+		server_sort.sort(servers);
+		System.out.println(servers[0].ratio);
+		System.out.println(servers[624].ratio);
+		
 		PrintWriter writer = null;
 		try {
 			writer = new PrintWriter("out.txt", "UTF-8");
