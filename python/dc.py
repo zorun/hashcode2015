@@ -102,7 +102,7 @@ class Pool(object):
         return self.cached_score
 
     def compute_score(self):
-        if self.servers == []:
+        if self.servers == set():
             return 0
         cpu = sum((s.cpu for s in self.servers))
         # CPU capacity per row
@@ -188,4 +188,6 @@ class DC(object):
 if __name__ == "__main__":
     d = DC(sys.argv[1])
     d.solve()
+    #d.display()
     d.output()
+    print(d.score(), file=sys.stderr)
