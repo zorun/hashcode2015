@@ -61,19 +61,7 @@ public class inout {
 		    System.out.println(min);
 		    System.out.println(max);
 		    
-                                       pool[] pools = new pool[48];
-                                       for(int i=0; i<48; i++){
-                                                pools[i].add(servers[i]);                                      
-                                       }
-                                       Random r=new Random();
-                                       
-                                       
-                                       for (int i=48; i<626;i++){
-                                       
-                                              pools[r.nextInt(49)].add(servers[i]);
-                                       
-                                       }
-                                       
+                                    
                                        
                                        
                    
@@ -102,6 +90,21 @@ public class inout {
 		System.out.println(servers[624].ratio);
 		System.out.println(data_center.R);
 	
+                                      pool[] pools = new pool[48];
+                                       for(int i=0; i<48; i++){
+                                                pools[i].add(servers[i]);                                      
+                                       }
+                                       Random r=new Random();
+                                       
+                                       
+                                       for (int i=48; i<626;i++){
+                                       
+                                              pools[r.nextInt(49)].add(servers[i]);
+                                       
+                                       }
+                                       
+                
+                
 		
 		PrintWriter writer = null;
 		try {
