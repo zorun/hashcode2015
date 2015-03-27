@@ -17,6 +17,13 @@ class Part(object):
                 if pizza[i][j] == 'H':
                     self.nb_hams += 1
 
+    def is_valid(self, min_ham, max_size):
+        area = (abs(self.col1-self.col2)+1)*(abs(self.row1-self.row2)+1)
+        if self.nb_hams >= min_ham and max_size >= area:
+            return True
+        else:
+            return False
+
     def intersects(self, other):
         """Untested"""
         return other.row1 <= self.row2 and other.row2 >= self.row1 and other.col1 <= self.col2 and other.col2 >= self.col1
@@ -48,6 +55,19 @@ class Pizza(object):
             if part.intersects(p):
                 return False
         return True
+
+    def cut(self):
+        for i in range(0, self. nb_lines):
+            for j in range(0, self.nb_cols):
+                if self.pizza[i][j] == 'H':
+                    for t in range(0, self.max_size/2):
+                        possible_part = Part(self, i, j, i+1, j+t)
+                        if possible_part.is_valid(self.min_ham, self.max_size):
+                            self.parts.append(possible_part)
+                            for x in range(i,i+2):
+                                for y in range(j,j+t+1):
+                                    self.pizza[x][y] = 'X'
+
 
     def is_part_possible(self, part):
         return self.is_part_possible_size(part) and self.is_part_possible_ham(part) and self.is_part_possible_collision(part)
