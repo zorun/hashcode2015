@@ -12,10 +12,10 @@ class Part(object):
         self.size = (self.row2 - self.row1 + 1) * (self.col2 - self.col1 + 1)
         # Compute number of hams
         self.nb_hams = 0
-        ##for i in range(row1, row2 + 1):
-        ##    for j in range(row1, row2 + 1):
-                ##if pizza[i][j] == 'H':
-                  ##  self.nb_hams += 1
+        for i in range(row1, row2 + 1):
+            for j in range(row1, row2 + 1):
+                if pizza[i][j] == 'H':
+                    self.nb_hams += 1
 
     def intersects(self, other):
         """Untested"""
