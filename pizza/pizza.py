@@ -13,7 +13,7 @@ class Part(object):
         # Compute number of hams
         self.nb_hams = 0
         for i in range(row1, row2 + 1):
-            for j in range(row1, row2 + 1):
+            for j in range(col1, col2 + 1):
                 if pizza[i][j] == 'H':
                     self.nb_hams += 1
 
@@ -51,7 +51,7 @@ class Pizza(object):
 
     def is_part_possible(self, part):
         return self.is_part_possible_size(part) and self.is_part_possible_ham(part) and self.is_part_possible_collision(part)
-    
+
     def __str__(self):
         return "\n".join(["".join(row) for row in self.pizza])
 
