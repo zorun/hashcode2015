@@ -39,7 +39,7 @@ class Pizza(object):
         with open(input_file) as f:
             self.nb_lines, self.nb_cols, self.min_ham, self.max_size = [int(x) for x in f.readline().split(' ')]
             for i in range(self.nb_lines):
-                self.pizza.append(f.readline().strip().split(' '))
+                self.pizza.append(list(f.readline().strip()))
 
     def add_part(self, part):
         self.parts.append(part)
@@ -71,11 +71,21 @@ class Pizza(object):
 
     def is_part_possible(self, part):
         return self.is_part_possible_size(part) and self.is_part_possible_ham(part) and self.is_part_possible_collision(part)
-
+    
     def __str__(self):
         return "\n".join(["".join(row) for row in self.pizza])
 
+    def print_all(self):
+        print(len(self.parts))
+        for p in self.parts:
+            print(p.row1, p.col1, p.row2, p.col2)
+        
+        return    
 
 if __name__ == '__main__':
     p = Pizza(sys.argv[1])
     print(p)
+    print(p.nb_lines, p.nb_cols)
+    part = Part(p.pizza, 3, 4, 4, 10)
+    p.add_part(part)
+    p.print_all()
