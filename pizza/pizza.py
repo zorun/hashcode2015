@@ -84,8 +84,7 @@ class Pizza(object):
 
 if __name__ == '__main__':
     p = Pizza(sys.argv[1])
-    print(p)
-    print(p.nb_lines, p.nb_cols)
-    part = Part(p.pizza, 3, 4, 4, 10)
+    ##print(p)
+    part = Part(p.pizza, 0, 1, 1, 6)
     p.add_part(part)
     p.print_all()
