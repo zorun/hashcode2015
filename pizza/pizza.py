@@ -32,7 +32,7 @@ class Pizza(object):
         with open(input_file) as f:
             self.nb_lines, self.nb_cols, self.min_ham, self.max_size = [int(x) for x in f.readline().split(' ')]
             for i in range(self.nb_lines):
-                self.pizza.append(f.readline().strip().split(' '))
+                self.pizza.append(list(f.readline().strip()))
 
     def add_part(self, part):
         self.parts.append(part)
