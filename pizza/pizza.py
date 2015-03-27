@@ -13,7 +13,7 @@ class Part(object):
         # Compute number of hams
         self.nb_hams = 0
         for i in range(row1, row2 + 1):
-            for j in range(row1, row2 + 1):
+            for j in range(col1, col2 + 1):
                 if pizza[i][j] == 'H':
                     self.nb_hams += 1
 
