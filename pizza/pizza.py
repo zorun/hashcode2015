@@ -14,7 +14,7 @@ class Part(object):
         self.nb_hams = 0
         for i in range(row1, row2 + 1):
             for j in range(col1, col2 + 1):
-                if pizza[i][j] == 'H':
+                if pizza.pizza[i][j] == 'H':
                     self.nb_hams += 1
 
     def is_valid(self, min_ham, max_size):
@@ -57,16 +57,17 @@ class Pizza(object):
         return True
 
     def cut(self):
-        for i in range(0, self. nb_lines):
+        for i in range(0, self. nb_lines-1):
             for j in range(0, self.nb_cols):
                 if self.pizza[i][j] == 'H':
-                    for t in range(0, self.max_size/2):
-                        possible_part = Part(self, i, j, i+1, j+t)
-                        if possible_part.is_valid(self.min_ham, self.max_size):
-                            self.parts.append(possible_part)
-                            for x in range(i,i+2):
-                                for y in range(j,j+t+1):
-                                    self.pizza[x][y] = 'X'
+                    for t in range(0, self.max_size//2):
+                        if t+j < self.nb_cols:
+                            possible_part = Part(self, i, j, i+1, j+t)
+                            if possible_part.is_valid(self.min_ham, self.max_size):
+                                self.parts.append(possible_part)
+                                for x in range(i,i+2):
+                                    for y in range(j,j+t+1):
+                                        self.pizza[x][y] = 'X'
 
 
     def is_part_possible(self, part):
@@ -86,6 +87,7 @@ if __name__ == '__main__':
     p = Pizza(sys.argv[1])
     print(p)
     print(p.nb_lines, p.nb_cols)
-    part = Part(p.pizza, 3, 4, 4, 10)
-    p.add_part(part)
+    #part = Part(p.pizza, 3, 4, 4, 10)
+    p.cut()
+    #p.add_part(part)
     p.print_all()
