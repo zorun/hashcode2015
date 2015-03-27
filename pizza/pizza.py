@@ -56,8 +56,9 @@ class Pizza(object):
         return "\n".join(["".join(row) for row in self.pizza])
 
     def print_all(self):
+        print(len(self.parts))
         for p in self.parts:
-            print(self.parts.row1, col1, row2, col2)
+            print(p.row1, p.col1, p.row2, p.col2)
         
         return    
 
@@ -66,5 +67,5 @@ if __name__ == '__main__':
     print(p)
     print(p.nb_lines, p.nb_cols)
     part = Part(p.pizza, 3, 4, 4, 10)
-    p.add_part(p.pizza, part)
-    p.print_all
+    p.add_part(part)
+    p.print_all()
