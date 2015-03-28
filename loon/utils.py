@@ -7,6 +7,26 @@ Point = namedtuple("Point", ("row", "col"))
 Vector = namedtuple("Vector", ("drow", "dcol"))
 
 
+def bfs_edges_limit(G, source, limit):
+        """Produce edges in a breadth-first-search starting at source.
+        Modifier from networkx to limit to a given distance from the source"""
+        visited = set([source])
+        stack = [(source, 0, iter(G[source]))]
+        while stack:
+            parent, dist, children = stack[0]
+            if dist > limit:
+                stack.pop(0)
+            else:
+                try:
+                    child = next(children)
+                    if child not in visited:
+                        yield parent,child
+                        visited.add(child)
+                        stack.append((child, dist + 1, iter(G[child])))
+                except StopIteration:
+                    stack.pop(0)
+                
+
 def print_wind(r, c):
 
 

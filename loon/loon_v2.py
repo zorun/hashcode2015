@@ -2,6 +2,7 @@ import sys
 import math
 import pickle
 
+import utils
 from utils import Point, Vector
 from graph import LoonGraph
 
