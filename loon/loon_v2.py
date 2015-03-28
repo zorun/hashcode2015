@@ -16,6 +16,7 @@ class Loon(object):
         with open(input_file) as f:
             self.nb_rows, self.nb_cols, self.altitudes = [int(x) for x in f.readline().split(' ')]
             self.nb_targets, self.radius, self.balloons, self.turns = [int(x) for x in f.readline().split(' ')]
+            self.start_row, self.start_col = [int(x) for x in f.readline().split(' ')]
             for i in range(self.nb_targets):
                 self.targets.append([(int(x), int(y)) for (x,y) in f.readline().strip().split(' ')])
             for i in range(self.nb_rows*self.altitudes):
