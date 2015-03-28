@@ -22,11 +22,12 @@ class LoonGraph(object):
     def __init__(self, loon):
         if os.path.exists('graph.txt'):
             
-            self = pickle.load(open('graph.txt'))
-            
+           # self = pickle.load(open('graph.txt'))
+            self=nx.read_gpickle("graph.gpickle")
         else:
             self.build_graph(loon)
-            pickle.dump(self, open('graph.txt', 'w'))
+            nx.write_gpickle(self,"graph.gpickle")
+            #pickle.dump(self, open('graph.txt', 'w'))
             # Load graph from file if it is already computed
             pass
 
