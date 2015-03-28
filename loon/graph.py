@@ -2,6 +2,8 @@ from collections import namedtuple
 
 import networkx as nx
 
+import utils
+
 
 Node = namedtuple("Node", ("row", "col", "alt", "input"))
 
@@ -19,9 +21,11 @@ class LoonGraph(object):
         # Source
         self.source = Node(row=loon.start_row, col=loon.start_col, alt=0, input=False)
         g.add_node(self.source)
+        g.node[self.source]["nb_targets"] = 0
         # Sink
         self.sink = None
         g.add_node(self.sink)
+        g.node[self.sink]["nb_targets"] = 0
         for alt in range(1, loon.altitudes + 1):
             for row in range(loon.nb_rows):
                 for col in range(loon.nb_cols):
@@ -41,6 +45,11 @@ class LoonGraph(object):
                         g.add_edge(n_out, self.sink)
                     else:
                         g.add_edge(n_out, Node(row + vec.drow, (col + vec.dcol) % loon.nb_cols, alt, True))
+                    # Covered targets
+                    here = utils.Point(row=row, col=col)
+                    targets = [t for t in loon.targets if loon.is_in_range(here, t)]
+                    #print("{} targets at position ({}, {}, {})".format(len(targets), alt, row, col))
+                    g.node[n_in]["nb_targets"] = len(targets)
         # Connect source to graph
         g.add_edge(self.source, Node(row=self.source.row, col=self.source.col, alt=1, input=True))
         self.g = g

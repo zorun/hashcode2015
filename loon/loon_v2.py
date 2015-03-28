@@ -1,11 +1,8 @@
 import sys
-from collections import namedtuple
+import math
 
-import utils as util
+from utils import Point, Vector
 from graph import LoonGraph
-
-Point = namedtuple("Point", ("row", "col"))
-Vector = namedtuple("Vector", ("drow", "dcol"))
 
 
 class Loon(object):
@@ -31,6 +28,12 @@ class Loon(object):
                     couple_wind = zip(list_altitude[::2],list_altitude[1::2])
                     self.winds[alt].append([Vector(drow=int(x), dcol=int(y)) for (col, (x, y)) in enumerate(couple_wind)])
         self.graph = LoonGraph(self)
+
+    def is_in_range(self, point1, point2):
+        dcol = abs(point2.col - point1.col)
+        drow = abs(point2.row - point1.row)
+        columndist = min(dcol, self.nb_cols - dcol)
+        return (drow * drow + columndist * columndist <= self.radius * self.radius)
 
 
 if __name__ == '__main__':
