@@ -39,6 +39,15 @@ class Loon(object):
         return (drow * drow + columndist * columndist <= self.radius * self.radius)
 
 
+    def print_loon(self,events)
+        f = open("loon.out", "w")
+        for i in range(0, self.turns)
+            for j in range(0, self.balloons)
+                f.write("{} ".format(events[j][i])
+            f.write("\n")
+        f.close()
+
+
 if __name__ == '__main__':
     k = range(0, 8, 1)
     l = Loon(sys.argv[1])
