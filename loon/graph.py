@@ -4,6 +4,9 @@ import networkx as nx
 
 import utils
 
+import os.path
+
+import pickle
 
 Node = namedtuple("Node", ("row", "col", "alt", "input"))
 
@@ -17,9 +20,13 @@ class LoonGraph(object):
     """
 
     def __init__(self, loon):
-        if True:
-            self.build_graph(loon)
+        if os.path.exists('graph.txt'):
+            
+            self = pickle.load(open('graph.txt'))
+            
         else:
+            self.build_graph(loon)
+            pickle.dump(self, open('graph.txt', 'w'))
             # Load graph from file if it is already computed
             pass
 
