@@ -3,7 +3,8 @@ from collections import namedtuple
 
 import utils as util
 
-Point = namedtuple("Point", "row", "col", "alt")
+Point = namedtuple("Point", ("row", "col"))
+Vector = namedtuple("Vector", ("drow", "dcol"))
 
 
 class Loon(object):
@@ -11,27 +12,38 @@ class Loon(object):
     def __init__(self, input_file):
 
         self.targets = list()
-        self.winds = list()
+        self.winds = dict()
 
         with open(input_file) as f:
             self.nb_rows, self.nb_cols, self.altitudes = [int(x) for x in f.readline().split(' ')]
             self.nb_targets, self.radius, self.balloons, self.turns = [int(x) for x in f.readline().split(' ')]
             self.start_row, self.start_col = [int(x) for x in f.readline().split(' ')]
+
+            #list = [for x, y in f.readline().strip().split(' ')]
+            #print(f.readline().strip().split(' '))
+
             for i in range(self.nb_targets):
-                self.targets.append([(int(x), int(y)) for (x,y) in f.readline().strip().split(' ')])
-            for i in range(self.nb_rows*self.altitudes):
-                self.winds.append(list(f.readline().strip()))
+                x, y = f.readline().strip().split(' ')
+                self.targets.append(Point(row=int(x), col=int(y)))
+
+            for alt in range(1,self.altitudes+1):
+                self.winds[alt] = list()
+                for row in range(self.nb_rows):
+                    list_altitude = f.readline().strip().split(' ')
+                    couple_wind = zip(list_altitude[::2],list_altitude[1::2])
+                    self.winds[alt].append([Vector(drow=x, dcol=y) for (col, (x, y)) in enumerate(couple_wind)])
+
+            print(self.winds)
+                    #self.winds[i].append(zip(list[::2],list[1::2])
+                    #self.winds[i].append()
+            #print(self.winds)
 
 if __name__ == '__main__':
     k = range(0, 8, 1)
     l = Loon(sys.argv[1])
 
     # Test point
-    p = Point(row=42, col=150, alt=5)
-    print(p.alt)
+    p = Point(row=42, col=150)
+    #print(p.alt)
 
-    ##print(*i)
-    for j in k:
-        print(*([1]*53))
-    for i in range(0, 392):
-        print(*([0]*53))
+
