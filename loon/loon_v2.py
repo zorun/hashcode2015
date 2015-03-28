@@ -1,4 +1,8 @@
 import sys
+from collections import namedtuple
+
+Point = namedtuple("Point", "row", "col", "alt")
+
 
 class Loon(object):
 
@@ -18,6 +22,10 @@ class Loon(object):
 if __name__ == '__main__':
     k = range(0, 8, 1)
     l = Loon(sys.argv[1])
+
+    # Test point
+    p = Point(row=42, col=150, alt=5)
+    print(p.alt)
 
     ##print(*i)
     for j in k:
