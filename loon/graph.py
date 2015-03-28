@@ -20,7 +20,7 @@ class LoonGraph(object):
     """
 
     def __init__(self, loon):
-        if os.path.exists('graph.txt'):
+        if os.path.exists('graph.gpickle'):
             
            # self = pickle.load(open('graph.txt'))
             self=nx.read_gpickle("graph.gpickle")
