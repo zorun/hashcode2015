@@ -3,7 +3,7 @@ from collections import namedtuple
 import networkx as nx
 
 
-Node = namedtuple("Node", "row", "col", "alt", "input")
+Node = namedtuple("Node", ("row", "col", "alt", "input"))
 
 
 class LoonGraph(object):
@@ -40,7 +40,7 @@ class LoonGraph(object):
                         # Ballon is lost
                         g.add_edge(n_out, self.sink)
                     else:
-                        g.add_edge(n_out, Node(row + vec.drow, (col + vec.dcol) % loon.nb_cols, alt, True)
+                        g.add_edge(n_out, Node(row + vec.drow, (col + vec.dcol) % loon.nb_cols, alt, True))
         # Connect source to graph
         g.add_edge(self.source, Node(row=self.source.row, col=self.source.col, alt=1, input=True))
         self.g = g

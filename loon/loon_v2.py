@@ -29,7 +29,7 @@ class Loon(object):
                 for row in range(self.nb_rows):
                     list_altitude = f.readline().strip().split(' ')
                     couple_wind = zip(list_altitude[::2],list_altitude[1::2])
-                    self.winds[alt].append([Vector(drow=x, dcol=y) for (col, (x, y)) in enumerate(couple_wind)])
+                    self.winds[alt].append([Vector(drow=int(x), dcol=int(y)) for (col, (x, y)) in enumerate(couple_wind)])
         self.graph = LoonGraph(self)
 
 
