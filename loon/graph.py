@@ -1,15 +1,13 @@
 from collections import namedtuple
+import os.path
 
 import networkx as nx
 
 import utils
+from constants import GRAPH
 
-import os.path
-
-import pickle
 
 Node = namedtuple("Node", ("row", "col", "alt", "input"))
-
 
 class LoonGraph(object):
     """Graph structure: each position (row, col, alt) is modelled as two nodes
@@ -20,16 +18,12 @@ class LoonGraph(object):
     """
 
     def __init__(self, loon):
-        if os.path.exists('graph.gpickle'):
-            
-           # self = pickle.load(open('graph.txt'))
-            self=nx.read_gpickle("graph.gpickle")
+        if os.path.exists(GRAPH):
+            self.g = nx.read_gpickle(GRAPH)
         else:
-            self.build_graph(loon)
-            nx.write_gpickle(self,"graph.gpickle")
-            #pickle.dump(self, open('graph.txt', 'w'))
             # Load graph from file if it is already computed
-            pass
+            self.build_graph(loon)
+            nx.write_gpickle(self, GRAPH)
 
     def build_graph(self, loon):
         g = nx.DiGraph()
