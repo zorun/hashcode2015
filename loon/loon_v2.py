@@ -38,12 +38,18 @@ class Loon(object):
         columndist = min(dcol, self.nb_cols - dcol)
         return (drow * drow + columndist * columndist <= self.radius * self.radius)
 
+    def get_movements(self, ballon):
+        return [1] * self.turns
 
-    def print_loon(self,events)
+    def solve(self):
+        moves = [self.get_movements(b) for b in range(self.balloons)]
+        self.print_loon(events)
+
+    def print_loon(self,events):
         f = open("loon.out", "w")
-        for i in range(0, self.turns)
-            for j in range(0, self.balloons)
-                f.write("{} ".format(events[j][i])
+        for i in range(0, self.turns):
+            for j in range(0, self.balloons):
+                f.write("{} ".format(events[j][i]))
             f.write("\n")
         f.close()
 
@@ -51,9 +57,4 @@ class Loon(object):
 if __name__ == '__main__':
     k = range(0, 8, 1)
     l = Loon(sys.argv[1])
-
-    # Test point
-    p = Point(row=42, col=150)
-    #print(p.alt)
-
-
+    l.solve()
