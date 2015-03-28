@@ -43,9 +43,9 @@ class Loon(object):
 
     def solve(self):
         moves = [self.get_movements(b) for b in range(self.balloons)]
-        self.print_loon(events)
+        self.print_loon(moves)
 
-    def print_loon(self,events):
+    def print_loon(self, events):
         f = open("loon.out", "w")
         for i in range(0, self.turns):
             for j in range(0, self.balloons):
