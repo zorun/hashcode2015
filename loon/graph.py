@@ -23,7 +23,7 @@ class LoonGraph(object):
         else:
             # Load graph from file if it is already computed
             self.build_graph(loon)
-            nx.write_gpickle(self, GRAPH)
+            nx.write_gpickle(self.g, GRAPH)
 
     def build_graph(self, loon):
         g = nx.DiGraph()
