@@ -70,3 +70,17 @@ class LoonGraph(object):
         g.add_edge(self.source, Node(row=self.source.row, col=self.source.col, alt=1, input=True))
         self.g = g
 
+#from input=False to input=True we print
+
+    def get_movements(self, cycle, start_Node, balloon, nb_hops):
+        for i in len(cycle):
+            if cycle[i] == start_Node:
+                break
+        current_node = i
+        next_node = current_node
+        for hop in range(nb_hops):
+            if current_node + 1 == len(cycle):
+                next_node = 0
+            else:
+                next_node = next_node + 1
+            pass
