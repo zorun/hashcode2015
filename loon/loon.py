@@ -6,6 +6,7 @@ import sys
 
 
 if __name__ == '__main__':
+    
     k = range(0, 8, 1);
     ##print(*i)
     print(*([1]*53), end=' ')

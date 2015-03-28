@@ -2,6 +2,7 @@ import sys
 from collections import namedtuple
 
 import utils as util
+from graph import LoonGraph
 
 Point = namedtuple("Point", ("row", "col"))
 Vector = namedtuple("Vector", ("drow", "dcol"))
@@ -37,6 +38,8 @@ class Loon(object):
                     #self.winds[i].append(zip(list[::2],list[1::2])
                     #self.winds[i].append()
             #print(self.winds)
+        self.graph = LoonGraph(self)
+
 
 if __name__ == '__main__':
     k = range(0, 8, 1)
