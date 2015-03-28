@@ -45,9 +45,9 @@ class LoonGraph(object):
                     g.add_edge(n_in, n_out)
                     # Link to other altitudes
                     if alt > 1:
-                        g.add_edge(n_out, Node(row, col, alt - 1, True))
+                        g.add_edge(n_in, Node(row, col, alt - 1, False))
                     if alt < loon.altitudes:
-                        g.add_edge(n_out, Node(row, col, alt + 1, True))
+                        g.add_edge(n_in, Node(row, col, alt + 1, False))
                     # Wind
                     vec = loon.winds[alt][row][col]
                     if row + vec.drow >= loon.nb_rows or row + vec.drow < 0:
