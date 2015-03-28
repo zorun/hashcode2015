@@ -48,6 +48,7 @@ class LoonGraph(object):
                     n_out = Node(row, col, alt, False)
                     g.add_node(n_in)
                     g.add_node(n_out)
+                    g.add_edge(n_in, n_out)
                     # Link to other altitudes
                     if alt > 1:
                         g.add_edge(n_out, Node(row, col, alt - 1, True))
@@ -64,7 +65,7 @@ class LoonGraph(object):
                     here = utils.Point(row=row, col=col)
                     targets = [t for t in loon.targets if loon.is_in_range(here, t)]
                     #print("{} targets at position ({}, {}, {})".format(len(targets), alt, row, col))
-                    g.node[n_in]["nb_targets"] = len(targets)
+                    g.node[n_in]["nb_targets"] = g.node[n_out]["nb_targets"] = len(targets)
         # Connect source to graph
         g.add_edge(self.source, Node(row=self.source.row, col=self.source.col, alt=1, input=True))
         self.g = g
