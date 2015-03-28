@@ -1,6 +1,8 @@
 import sys
 from collections import namedtuple
 
+import utils as util
+
 Point = namedtuple("Point", "row", "col", "alt")
 
 
