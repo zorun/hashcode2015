@@ -17,6 +17,13 @@ class LoonGraph(object):
     """
 
     def __init__(self, loon):
+        if True:
+            self.build_graph(loon)
+        else:
+            # Load graph from file if it is already computed
+            pass
+
+    def build_graph(self, loon):
         g = nx.DiGraph()
         # Source
         self.source = Node(row=loon.start_row, col=loon.start_col, alt=0, input=False)
@@ -53,3 +60,4 @@ class LoonGraph(object):
         # Connect source to graph
         g.add_edge(self.source, Node(row=self.source.row, col=self.source.col, alt=1, input=True))
         self.g = g
+
