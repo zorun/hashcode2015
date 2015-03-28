@@ -1,5 +1,6 @@
 from collections import namedtuple
 import os.path
+import itertools
 
 import networkx as nx
 
@@ -67,14 +68,19 @@ class LoonGraph(object):
 #from input=False to input=True we print
 
     def get_movements(self, cycle, start_Node, balloon, nb_hops):
-        for i in len(cycle):
-            if cycle[i] == start_Node:
-                break
-        current_node = i
-        next_node = current_node
-        for hop in range(nb_hops):
-            if current_node + 1 == len(cycle):
-                next_node = 0
-            else:
-                next_node = next_node + 1
+
+        alt_moves = list()
+        cyclic_list = itertools.cycle(cycle[1:])
+        while next(cyclic_list) != start_Node:
             pass
+
+        current_node = start_Node
+        for hop in range(nb_hops):
+            next_node = next(cyclic_list)
+            if next_node.input == True: #skip the transition from input.False to input.True
+                next_node = next(cyclic_list)
+
+            alt_moves.append(next_node.row - current_node.row)
+            current_node = next_node
+
+        return alt_moves
