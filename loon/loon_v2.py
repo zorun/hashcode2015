@@ -20,9 +20,6 @@ class Loon(object):
             self.nb_targets, self.radius, self.balloons, self.turns = [int(x) for x in f.readline().split(' ')]
             self.start_row, self.start_col = [int(x) for x in f.readline().split(' ')]
 
-            #list = [for x, y in f.readline().strip().split(' ')]
-            #print(f.readline().strip().split(' '))
-
             for i in range(self.nb_targets):
                 x, y = f.readline().strip().split(' ')
                 self.targets.append(Point(row=int(x), col=int(y)))
@@ -33,11 +30,6 @@ class Loon(object):
                     list_altitude = f.readline().strip().split(' ')
                     couple_wind = zip(list_altitude[::2],list_altitude[1::2])
                     self.winds[alt].append([Vector(drow=x, dcol=y) for (col, (x, y)) in enumerate(couple_wind)])
-
-            print(self.winds)
-                    #self.winds[i].append(zip(list[::2],list[1::2])
-                    #self.winds[i].append()
-            #print(self.winds)
         self.graph = LoonGraph(self)
 
 
