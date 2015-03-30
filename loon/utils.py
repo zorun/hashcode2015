@@ -8,62 +8,41 @@ Vector = namedtuple("Vector", ("drow", "dcol"))
 
 
 def bfs_edges_limit(G, source, limit):
-        """Produce edges in a breadth-first-search starting at source.
-        Modifier from networkx to limit to a given distance from the source"""
-        visited = set([source])
-        stack = [(source, 0, iter(G[source]))]
-        while stack:
-            parent, dist, children = stack[0]
-            if dist > limit:
+    """Produce edges in a breadth-first-search starting at source.
+    Modified from networkx to limit to a given distance from the source"""
+    visited = set([source])
+    stack = [(source, 0, iter(G[source]))]
+    while stack:
+        parent, dist, children = stack[0]
+        if dist > limit:
+            stack.pop(0)
+        else:
+            try:
+                child = next(children)
+                if child not in visited:
+                    yield parent,child
+                    visited.add(child)
+                    stack.append((child, dist + 1, iter(G[child])))
+            except StopIteration:
                 stack.pop(0)
-            else:
-                try:
-                    child = next(children)
-                    if child not in visited:
-                        yield parent,child
-                        visited.add(child)
-                        stack.append((child, dist + 1, iter(G[child])))
-                except StopIteration:
-                    stack.pop(0)
-                
 
-def print_wind(r, c):
+def sign(x):
+    if x == 0:
+        return 0
+    else:
+        return 1 if x > 0 else -1
 
-
-    s1 = "/>"
-    s2 = "->"
-    s3 = "\>"
-    s4 = "|,"
-    s5 = "|'"
-    s6 = "</"
-    s7 = "<-"
-    s8 = "<\\"
-
-    if (c > 0):
-        if (r < 0):
-            print(s1, end=' ')
-            return
-        if (r == 0):
-            print(s2, end=' ')
-            return
-        if (r > 0):
-            print(s3, end=' ')
-            return
-    if (c == 0):
-        if (r < 0):
-            print(s5, end=' ')
-            return
-        if (r > 0):
-            print(s4, end=' ')
-            return
-    if (c < 0):
-        if (r < 0):
-            print(s8, end=' ')
-            return
-        if (r == 0):
-            print(s7, end=' ')
-            return
-        if (r > 0):
-            print(s6, end=' ')
-            return
-    return
+def get_wind(vec):
+    """Returns an arrow representing the wind direction given by a vector"""
+    directions = {
+        (0,   0) : "·",
+        (1,   0) : "̉↑",
+        (1,   1) : "´",
+        (0,   1) : "→",
+        (-1,  1) : "\\",
+        (-1,  0) : "↓",
+        (-1, -1) : ",",
+        (0,  -1) : "←",
+        (1,  -1) : "`"
+    }
+    return directions[(sign(vec.drow), sign(vec.dcol))]

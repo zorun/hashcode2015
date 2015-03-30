@@ -31,7 +31,16 @@ class Loon(object):
                     list_altitude = f.readline().strip().split(' ')
                     couple_wind = zip(list_altitude[::2],list_altitude[1::2])
                     self.winds[alt].append([Vector(drow=int(x), dcol=int(y)) for (col, (x, y)) in enumerate(couple_wind)])
+
+    def build_graph(self):
         self.graph = LoonGraph(self)
+
+    def print_wind(self, altitude):
+        # Print the map with a rotation of 90°, so that it fits on a 80-column terminal
+        for col in range(self.nb_cols):
+            for row in range(self.nb_rows):
+                print(utils.get_wind(self.winds[altitude][row][col]), end='')
+            print()
 
     def is_in_range(self, point1, point2):
         dcol = abs(point2.col - point1.col)
@@ -69,4 +78,6 @@ class Loon(object):
 
 if __name__ == '__main__':
     l = Loon(sys.argv[1])
+    #l.print_wind(2)
+    l.build_graph()
     l.solve()
