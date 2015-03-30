@@ -19,6 +19,8 @@ class LoonGraph(object):
     """
 
     def __init__(self, loon):
+        self.source = Node(row=loon.start_row, col=loon.start_col, alt=0, input=False)
+        self.sink = None
         if os.path.exists(GRAPH):
             self.g = nx.read_gpickle(GRAPH)
         else:
@@ -29,11 +31,9 @@ class LoonGraph(object):
     def build_graph(self, loon):
         g = nx.DiGraph()
         # Source
-        self.source = Node(row=loon.start_row, col=loon.start_col, alt=0, input=False)
         g.add_node(self.source)
         g.node[self.source]["nb_targets"] = 0
         # Sink
-        self.sink = None
         g.add_node(self.sink)
         g.node[self.sink]["nb_targets"] = 0
         for alt in range(1, loon.altitudes + 1):
