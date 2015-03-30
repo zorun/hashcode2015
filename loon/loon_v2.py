@@ -1,6 +1,7 @@
 import sys
 import math
 import pickle
+import random
 
 import utils
 from utils import Point, Vector
@@ -39,7 +40,19 @@ class Loon(object):
         return (drow * drow + columndist * columndist <= self.radius * self.radius)
 
     def get_movements(self, ballon):
-        return [1] * self.turns
+        path = list()
+        node = self.graph.source
+        for t in range(2 * self.turns + 2):
+            path.append(node)
+            neighbours = list(self.graph.g[node].keys())
+            if len(neighbours) > 0:
+                best_neighbour = max(neighbours, key=lambda x: self.graph.g.node[x]["nb_targets"])
+                if self.graph.g.node[best_neighbour]["nb_targets"] == 0:
+                    node = random.choice(neighbours)
+                else:
+                    node = best_neighbour
+        res = list(self.graph.path_to_movements(path))[:self.turns]
+        return res
 
     def solve(self):
         moves = [self.get_movements(b) for b in range(self.balloons)]
