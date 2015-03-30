@@ -84,3 +84,23 @@ class LoonGraph(object):
             current_node = next_node
 
         return alt_moves
+
+    def path_to_movements(self, path):
+        for (node1, node2) in zip(path, path[1:]):
+            #print(node1, node2)
+            if node1 == None or node2 == None:
+                yield 0
+            elif node2.alt > node1.alt:
+                yield 1
+            elif node2.alt < node1.alt:
+                yield -1
+            elif node1.input == True: #skip the transition from input.True to input.False
+                continue
+            elif node2.alt == node1.alt:
+                yield 0
+
+    def test(self, node):
+        for neigh in self.g[node]:
+            for e in utils.bfs_edges_limit(self.g, neigh, 15):
+                print(e)
+
