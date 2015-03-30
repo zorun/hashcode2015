@@ -10,6 +10,14 @@ from constants import GRAPH
 
 Node = namedtuple("Node", ("row", "col", "alt", "input"))
 
+
+# This is used to mark nodes when exploring the graph with BFS:
+# - last_time: time of the last exploration of this node
+# - total_score: cumulated score of the current best path from starting node to this node
+# - ancestor: previous node in the current best path from starting node to this node
+Mark = namedtuple("Mark", ("last_time", "total_score", "ancestor"))
+
+
 class LoonGraph(object):
     """Graph structure: each position (row, col, alt) is modelled as two nodes
     (True → input, False → output)
@@ -86,8 +94,37 @@ class LoonGraph(object):
             else:
                 yield 0
 
-    def test(self, node):
-        for neigh in self.g[node]:
-            for e in utils.bfs_edges_limit(self.g, neigh, 15):
-                print(e)
+    def bfs_edges(self, start_node, limit=400):
+        """Produce edges in a breadth-first-search starting at source.
+        Modified from networkx to limit to a given distance from the source"""
+        def add_mark(node, mark):
+            self.g.node[node]["mark"] = mark
 
+        add_mark(start_node, Mark(0, 0, None))
+        stack = [(start_node, 0, iter(self.g[start_node]))]
+        while stack:
+            parent, dist, children = stack[0]
+            if dist >= limit:
+                stack.pop(0)
+            else:
+                try:
+                    child = next(children)
+                    weight = self.g[parent][child].get("weight", 1)
+                    # We multiply by the weight, so that 0-weight edges don't increase the score
+                    child_score = self.g.node[parent]["mark"].total_score + weight * self.g.node[child]["nb_targets"]
+                    # Either we haven't visited the child yet, or we found a better path
+                    if ("mark" not in self.g.node[child]) or (child_score > self.g.node[child]["mark"].total_score):
+                        add_mark(child, Mark(self.g.node[parent]["mark"].last_time + weight, child_score, parent))
+                        yield parent, child
+                        stack.append((child, dist + weight, iter(self.g[child])))
+                except StopIteration:
+                    stack.pop(0)
+
+    def test(self, node, limit=10):
+        best_node = node
+        for e in self.bfs_edges(node, limit):
+            mark = self.g.node[e[1]]["mark"]
+            print(e[1], mark)
+            if mark.last_time == limit:
+                best_node = max(best_node, e[1], key=lambda n: self.g.node[n]["mark"].total_score)
+        print("Best: {} with score {}".format(best_node, self.g.node[best_node]["mark"].total_score))

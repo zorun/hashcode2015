@@ -80,4 +80,5 @@ if __name__ == '__main__':
     l = Loon(sys.argv[1])
     #l.print_wind(2)
     l.build_graph()
-    l.solve()
+    l.graph.test(l.graph.source)
+    #l.solve()
