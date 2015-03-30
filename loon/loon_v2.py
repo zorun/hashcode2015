@@ -68,6 +68,5 @@ class Loon(object):
 
 
 if __name__ == '__main__':
-    k = range(0, 8, 1)
     l = Loon(sys.argv[1])
     l.solve()

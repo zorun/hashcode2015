@@ -65,26 +65,6 @@ class LoonGraph(object):
         g.add_edge(self.source, Node(row=self.source.row, col=self.source.col, alt=1, input=True))
         self.g = g
 
-#from input=False to input=True we print
-
-    def get_movements(self, cycle, start_Node, balloon, nb_hops):
-
-        alt_moves = list()
-        cyclic_list = itertools.cycle(cycle[1:])
-        while next(cyclic_list) != start_Node:
-            pass
-
-        current_node = start_Node
-        for hop in range(nb_hops):
-            next_node = next(cyclic_list)
-            if next_node.input == True: #skip the transition from input.False to input.True
-                next_node = next(cyclic_list)
-
-            alt_moves.append(next_node.row - current_node.row)
-            current_node = next_node
-
-        return alt_moves
-
     def path_to_movements(self, path):
         for (node1, node2) in zip(path, path[1:]):
             #print(node1, node2)
