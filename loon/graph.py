@@ -68,7 +68,7 @@ class LoonGraph(object):
                     #print("{} targets at position ({}, {}, {})".format(len(targets), alt, row, col))
                     g.node[n_in]["nb_targets"] = g.node[n_out]["nb_targets"] = len(targets)
         # Connect source to graph
-        g.add_edge(self.source, Node(row=self.source.row, col=self.source.col, alt=1, input=True), weight=1)
+        g.add_edge(self.source, Node(row=self.source.row, col=self.source.col, alt=1, input=False), weight=1)
         # Self-edge on the source, to model the fact that we can wait before launching a balloon
         g.add_edge(self.source, self.source, weight=1)
         self.g = g
