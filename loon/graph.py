@@ -77,7 +77,7 @@ class LoonGraph(object):
         for (node1, node2) in zip(path, path[1:]):
             if node1 == self.sink or node2 == self.sink:
                 yield 0
-            elif self.g[node1][node2][weight] == 0:
+            elif self.g[node1][node2]["weight"] == 0:
                 continue
             elif node2.alt > node1.alt:
                 yield 1
