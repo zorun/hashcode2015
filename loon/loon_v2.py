@@ -49,12 +49,14 @@ class Loon(object):
         return (drow * drow + columndist * columndist <= self.radius * self.radius)
 
     def get_movements(self, ballon):
-        # Bruteforce by increments
-        limit = 10
+        # Bruteforce by increments (18 edges for the first bruteforce,
+        # then 15 for all the following ones, see below)
+        limit = 18
         node = self.graph.source
         path = [node]
         while len(path) < self.turns + 1:
             score, res = self.graph.bruteforce(node, min(limit, self.turns + 1 - len(path)))
+            limit = 15
             res.reverse()
             path.extend(res[1:])
             node = res[-1]
