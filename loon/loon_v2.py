@@ -56,7 +56,8 @@ class Loon(object):
     def get_movements(self, ballon):
         # Bruteforce by increments (18 edges for the first bruteforce,
         # then 15 for all the following ones, see below)
-        limit = 18
+        limit = 12
+        keep = 9
         node = self.graph.source
         path = [node]
         time = 0
@@ -64,6 +65,8 @@ class Loon(object):
             score, res = self.graph.bruteforce(node, time, min(time + limit - 1, self.turns - 1))
             limit = 10
             res.reverse()
+            res = res[:keep]
+            #print(res)
             path.extend(res[1:])
             node = res[-1]
             time += len(res) - 1
