@@ -114,11 +114,27 @@ class LoonGraph(object):
             except StopIteration:
                 stack.pop(0)
 
+    def build_path(self, end_node):
+        """Build a path, starting from an end node and using the ancestor
+        information to go back to the source node."""
+        def iterator():
+            yield end_node
+            parent = self.g.node[end_node]["mark"].ancestor
+            while parent != None:
+                yield parent
+                parent = self.g.node[parent]["mark"].ancestor
+        result = list(iterator())
+        result.reverse()
+        return result
+
     def test(self, node, limit=10):
         best_node = node
         for e in self.bfs_edges(node, limit):
             mark = self.g.node[e[1]]["mark"]
-            print("{}\n{}\n{}\n".format(e[0], e[1], mark))
+            #print("{}\n{}\n{}\n".format(e[0], e[1], mark))
             if mark.last_time == limit:
                 best_node = max(best_node, e[1], key=lambda n: self.g.node[n]["mark"].total_score)
         print("Best: {} with score {}".format(best_node, self.g.node[best_node]["mark"].total_score))
+        path = self.build_path(best_node)
+        print(path)
+        print(list(self.path_to_movements(path)))
