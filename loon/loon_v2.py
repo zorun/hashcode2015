@@ -57,6 +57,7 @@ class Loon(object):
             score, res = self.graph.bruteforce(node, min(limit, self.turns + 1 - len(path)))
             res.reverse()
             path.extend(res[1:])
+            node = res[-1]
         return list(self.graph.path_to_movements(path))
 
     def solve(self):
