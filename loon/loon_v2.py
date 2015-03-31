@@ -78,7 +78,9 @@ class Loon(object):
 
 if __name__ == '__main__':
     l = Loon(sys.argv[1])
-    #l.print_wind(2)
+    #l.print_wind(5)
     l.build_graph()
-    l.graph.test(l.graph.source)
+    #l.graph.display_graph()
+    #l.graph.test(l.graph.source)
+    l.graph.test_bruteforce()
     #l.solve()

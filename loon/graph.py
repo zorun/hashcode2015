@@ -92,7 +92,26 @@ class LoonGraph(object):
             else:
                 yield 0
 
-    def bfs_edges(self, start_node, limit=400):
+    def bruteforce(self, node, limit):
+        if limit == 0:
+            best = [0, []]
+        else:
+            best = max((self.bruteforce(neigh, limit - 1) for neigh in self.g[node]),
+                       key=lambda x: x[0])
+        best[0] += self.g.node[node]["nb_targets"]
+        best[1].append(node)
+        return best
+
+    def test_bruteforce(self):
+        score, path = self.bruteforce(self.source, 16)
+        path.reverse()
+        score2, path2 = self.bruteforce(path[-1], 16)
+        path2.reverse()
+        print(score, score2)
+        print(path, path2)
+        print(list(self.path_to_movements(path + path2[1:])))
+
+    def bfs_edges(self, start_node, limit):
         """Produce edges in a breadth-first-search starting at source.
         Modified from networkx to limit to a given distance from the source"""
         def add_mark(node, mark):
