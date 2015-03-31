@@ -49,22 +49,18 @@ class Loon(object):
         return (drow * drow + columndist * columndist <= self.radius * self.radius)
 
     def get_movements(self, ballon):
-        path = list()
+        # Bruteforce by increments
+        limit = 10
         node = self.graph.source
-        for t in range(2 * self.turns + 2):
-            path.append(node)
-            neighbours = list(self.graph.g[node].keys())
-            if len(neighbours) > 0:
-                best_neighbour = max(neighbours, key=lambda x: self.graph.g.node[x]["nb_targets"])
-                if self.graph.g.node[best_neighbour]["nb_targets"] == 0:
-                    node = random.choice(neighbours)
-                else:
-                    node = best_neighbour
-        res = list(self.graph.path_to_movements(path))[:self.turns]
-        return res
+        path = [node]
+        while len(path) < self.turns + 1:
+            score, res = self.graph.bruteforce(node, min(limit, self.turns + 1 - len(path)))
+            res.reverse()
+            path.extend(res[1:])
+        return list(self.graph.path_to_movements(path))
 
     def solve(self):
-        moves = [self.get_movements(b) for b in range(self.balloons)]
+        moves = [self.get_movements(0)] * self.balloons
         self.print_loon(moves)
 
     def print_loon(self, events):
@@ -82,5 +78,5 @@ if __name__ == '__main__':
     l.build_graph()
     #l.graph.display_graph()
     #l.graph.test(l.graph.source)
-    l.graph.test_bruteforce()
-    #l.solve()
+    #l.graph.test_bruteforce()
+    l.solve()
