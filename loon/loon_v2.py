@@ -11,7 +11,8 @@ from graph import LoonGraph
 
 class Loon(object):
 
-    def __init__(self, input_file):
+    def __init__(self, input_file, output_file):
+        self.output_file = output_file
 
         self.targets = list()
         self.winds = dict()
@@ -67,7 +68,7 @@ class Loon(object):
         self.print_loon(moves)
 
     def print_loon(self, events):
-        f = open("loon.out", "w")
+        f = open(self.output_file, "w")
         for i in range(0, self.turns):
             for j in range(0, self.balloons):
                 f.write("{} ".format(events[j][i]))
@@ -76,7 +77,8 @@ class Loon(object):
 
 
 if __name__ == '__main__':
-    l = Loon(sys.argv[1])
+    out = sys.argv[2] if len(sys.argv) > 2 else "loon.out"
+    l = Loon(sys.argv[1], out)
     #l.print_wind(5)
     l.build_graph()
     #l.graph.display_graph()
