@@ -13,7 +13,9 @@ class Loon(object):
 
     def __init__(self, input_file):
 
-        self.targets = list()
+        # Position -> bool list
+        # (representing, for each turn, whether this target is covered at the end of the turn
+        self.targets = dict()
         self.winds = dict()
 
         with open(input_file) as f:
@@ -23,7 +25,7 @@ class Loon(object):
 
             for i in range(self.nb_targets):
                 x, y = f.readline().strip().split(' ')
-                self.targets.append(Point(row=int(x), col=int(y)))
+                self.targets[Point(row=int(x), col=int(y))] = [False] * self.turns
 
             for alt in range(1,self.altitudes+1):
                 self.winds[alt] = list()
@@ -42,11 +44,13 @@ class Loon(object):
                 print(utils.get_wind(self.winds[altitude][row][col]), end='')
             print()
 
-    def is_in_range(self, point1, point2):
+    def is_in_range(self, point1, point2, radius=None):
+        if radius == None:
+            radius = self.radius
         dcol = abs(point2.col - point1.col)
         drow = abs(point2.row - point1.row)
         columndist = min(dcol, self.nb_cols - dcol)
-        return (drow * drow + columndist * columndist <= self.radius * self.radius)
+        return (drow * drow + columndist * columndist <= radius * radius)
 
     def get_movements(self, ballon):
         # Bruteforce by increments (18 edges for the first bruteforce,
@@ -54,16 +58,22 @@ class Loon(object):
         limit = 18
         node = self.graph.source
         path = [node]
-        while len(path) < self.turns + 1:
-            score, res = self.graph.bruteforce(node, min(limit, self.turns + 1 - len(path)))
-            limit = 15
+        time = 0
+        while time < self.turns:
+            score, res = self.graph.bruteforce(node, time, min(time + limit - 1, self.turns - 1))
+            limit = 10
             res.reverse()
             path.extend(res[1:])
             node = res[-1]
+            time += len(res) - 1
+        self.graph.add_path(path)
+        print(path)
         return list(self.graph.path_to_movements(path))
 
     def solve(self):
-        moves = [self.get_movements(0)] * self.balloons
+        moves = list()
+        for b in range(self.balloons):
+            moves.append(self.get_movements(b))
         self.print_loon(moves)
 
     def print_loon(self, events):

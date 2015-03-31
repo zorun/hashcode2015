@@ -34,6 +34,13 @@ class LoonGraph(object):
         else:
             self.build_graph()
             nx.write_gpickle(self.g, GRAPH)
+        # Pre-compute scores (3D list: row, col, time)
+        self.scores = list()
+        for row in range(self.loon.nb_rows):
+            row_scores = list()
+            for col in range(self.loon.nb_cols):
+                row_scores.append([self.g.node[Node(row, col, 1)]["nb_targets"]] * self.loon.turns)
+            self.scores.append(row_scores)
 
     def add_wind_edge(self, source, dest):
         """Adds an edge to the graph, from the given node [source], to the node
@@ -48,6 +55,39 @@ class LoonGraph(object):
         else:
             wind_dest = Node(dest.row + vec.drow, (dest.col + vec.dcol) % self.loon.nb_cols, dest.alt)
         self.g.add_edge(source, wind_dest)
+
+    def score(self, node, time):
+        if node == self.sink:
+            # Average score achievable per balloon per turn
+            return -33
+        if node.alt == 0:
+            return 0
+        return self.scores[node.row][node.col][time]
+
+    def add_path(self, path):
+        """Changes the score by marking visited nodes as not contributing to the
+        score anymore"""
+        for (time, node) in enumerate(path[1:]):
+            if node == self.sink:
+                continue
+            position = utils.Point(node.row, node.col)
+            # Optimisation attempt
+            targets = [t for t in self.loon.targets if self.loon.is_in_range(position, t, 3 * self.loon.radius)]
+            # Mark targets as covered
+            for target in targets:
+                if self.loon.is_in_range(position, target):
+                    #print("Marking target {} as covered by node {} at time {}".format(target, node, time))
+                    self.loon.targets[target][time] = True
+            # Recompute score of neighbouring positions
+            for row in range(node.row - 2 * self.loon.radius, node.row + 2 * self.loon.radius + 1):
+                if row < 0 or row >= self.loon.nb_rows:
+                    continue
+                for col in range(node.col - 2 * self.loon.radius, node.col + 2 * self.loon.radius + 1):
+                    col %= self.loon.nb_cols
+                    point = utils.Point(row, col)
+                    if self.loon.is_in_range(position, point, 2 * self.loon.radius):
+                        self.scores[row][col][time] = len([target for target in targets if not self.loon.targets[target][time] and self.loon.is_in_range(point, target)])
+                        #print("Score at point ({}, {}), time {}, is now {}".format(row, col, time, self.scores[row][col][time]))
 
     def build_graph(self):
         self.g = nx.DiGraph()
@@ -92,23 +132,29 @@ class LoonGraph(object):
             else:
                 yield 0
 
-    def bruteforce(self, node, limit):
-        if limit == 0:
-            best = [0, []]
-        else:
-            best = max((self.bruteforce(neigh, limit - 1) for neigh in self.g[node]),
-                       key=lambda x: x[0])
-        best[0] += self.g.node[node]["nb_targets"]
-        best[1].append(node)
-        return best
+    def bruteforce(self, start_node, start_time, stop_time):
+        """Returns a path of (stop_time - start_time + 2) nodes, including the
+        starting node"""
+        def aux(node, time):
+            if time == stop_time:
+                best = [0, []]
+            else:
+                best = max((aux(neigh, time + 1) for neigh in self.g[node]),
+                           key=lambda x: x[0])
+            # First node doesn't contribute to the score
+            if time >= start_time:
+                best[0] += self.score(node, time)
+            best[1].append(node)
+            return best
+        return aux(start_node, start_time - 1)
 
     def test_bruteforce(self):
-        score, path = self.bruteforce(self.source, 16)
+        score, path = self.bruteforce(self.source, 0, 2)
         path.reverse()
-        score2, path2 = self.bruteforce(path[-1], 16)
+        score2, path2 = self.bruteforce(path[-1], 3, 6)
         path2.reverse()
-        print(score, score2)
-        print(path, path2)
+        print(score, path)
+        print(score2, path2)
         print(list(self.path_to_movements(path + path2[1:])))
 
     def bfs_edges(self, start_node, limit):
